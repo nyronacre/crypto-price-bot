@@ -2,8 +2,8 @@ telegram:
   bot:
 #    не вписывайте данные, так как можете отправить в публичный репозиторий
 #    используйте переменные среды для установки значений
-    username: ${BOT_NAME}
-    token: ${BOT_TOKEN}
+    username: changeme
+    token: changeme
     notify:
       delay:
         value: 10
@@ -19,3 +19,12 @@ db:
   url: jdbc:postgresql://localhost:5432/db
   user: root
   password: root
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
