@@ -1,14 +1,15 @@
 telegram:
   bot:
-#    не вписывайте данные, так как можете отправить в публичный репозиторий
-#    используйте переменные среды для установки значений
     username: changeme
     token: changeme
     notify:
       delay:
         value: 10
         unit: MINUTES
-
+      check:
+        interval: 120000
+#    не вписывайте данные, так как можете отправить в публичный репозиторий
+#    используйте переменные среды для установки значений
 binance:
   api:
     getPrice: https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT

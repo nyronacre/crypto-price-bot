@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -24,4 +25,7 @@ public class Subscriber {
 
     @Column(name = "price")
     private Double price;
+
+    @Column(name = "last_notified_at")
+    private LocalDateTime lastNotifiedAt;
 }
