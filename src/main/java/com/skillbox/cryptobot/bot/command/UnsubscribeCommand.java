@@ -1,20 +1,22 @@
 package com.skillbox.cryptobot.bot.command;
 
-import lombok.AllArgsConstructor;
+import com.skillbox.cryptobot.service.SubscriberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-/**
- * Обработка команды отмены подписки на курс валюты
- */
 @Service
 @Slf4j
-@AllArgsConstructor
 public class UnsubscribeCommand implements IBotCommand {
+    private final SubscriberService subscriberService;
 
+    public UnsubscribeCommand(SubscriberService subscriberService) {
+        this.subscriberService = subscriberService;
+    }
 
     @Override
     public String getCommandIdentifier() {
@@ -28,6 +30,16 @@ public class UnsubscribeCommand implements IBotCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
+        boolean wasSubscribed = subscriberService.unsubscribe(message.getChatId());
+        String text = wasSubscribed ? "Подписка отменена" : "Активные подписки отсутствуют";
 
+        SendMessage answer = new SendMessage();
+        answer.setChatId(message.getChatId());
+        answer.setText(text);
+        try {
+            absSender.execute(answer);
+        } catch (TelegramApiException e) {
+            log.error("Error occurred in /unsubscribe command", e);
+        }
     }
 }

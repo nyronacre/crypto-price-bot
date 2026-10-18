@@ -24,6 +24,21 @@ public class SubscriberService {
         repository.save(subscriber);
     }
 
+    public Double getPrice(Long telegramId) {
+        return repository.findByTelegramId(telegramId)
+                .map(Subscriber::getPrice)
+                .orElse(null);
+    }
+
+    public boolean unsubscribe(Long telegramId) {
+        Double current = getPrice(telegramId);
+        if (current == null) {
+            return false;
+        }
+        setPrice(telegramId, null);
+        return true;
+    }
+
     private Subscriber findOrCreate(Long telegramId) {
         return repository.findByTelegramId(telegramId).orElseGet(() -> {
             Subscriber subscriber = new Subscriber();
