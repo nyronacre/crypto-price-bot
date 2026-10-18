@@ -35,7 +35,8 @@ public class StartCommand implements IBotCommand {
         SendMessage answer = new SendMessage();
         answer.setChatId(message.getChatId());
         answer.setText("Привет! Данный бот помогает отслеживать стоимость биткоина.\n"
-                + "Поддерживаемые команды:\n /get_price - получить стоимость биткоина\n");
+                + "Поддерживаемые команды:\n /get_price - получить стоимость биткоина\n"
+                + " /subscribe ЦЕНА - подписаться на стоимость\n");
 
         try {
             absSender.execute(answer);

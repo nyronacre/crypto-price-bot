@@ -15,11 +15,21 @@ public class SubscriberService {
     }
 
     public void registerIfAbsent(Long telegramId) {
-        if (repository.findByTelegramId(telegramId).isEmpty()) {
+        findOrCreate(telegramId);
+    }
+
+    public void setPrice(Long telegramId, Double price) {
+        Subscriber subscriber = findOrCreate(telegramId);
+        subscriber.setPrice(price);
+        repository.save(subscriber);
+    }
+
+    private Subscriber findOrCreate(Long telegramId) {
+        return repository.findByTelegramId(telegramId).orElseGet(() -> {
             Subscriber subscriber = new Subscriber();
             subscriber.setId(UUID.randomUUID());
             subscriber.setTelegramId(telegramId);
-            repository.save(subscriber);
-        }
+            return repository.save(subscriber);
+        });
     }
 }
