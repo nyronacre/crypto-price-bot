@@ -9,6 +9,8 @@ import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -47,12 +49,14 @@ public class SubscribeCommand implements IBotCommand {
                     + TextUtil.toString(currencyService.getBitcoinPrice()) + " USD");
             send(absSender, message, "Новая подписка создана на стоимость "
                     + TextUtil.toString(target));
-        } catch (Exception e) {
-            log.error("Error occurred in /subscribe command", e);
+        } catch (IOException e) {
+            log.error("Could not get bitcoin price in /subscribe", e);
+        } catch (TelegramApiException e) {
+            log.error("Could not send message in /subscribe", e);
         }
     }
 
-    private void send(AbsSender absSender, Message message, String text) throws Exception {
+    private void send(AbsSender absSender, Message message, String text) throws TelegramApiException {
         SendMessage answer = new SendMessage();
         answer.setChatId(message.getChatId());
         answer.setText(text);
